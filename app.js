@@ -29,6 +29,17 @@ class View{
       }
       return element
    }
+
+   createUser(user){
+      console.log(user)
+      const userElement = this.createElement('li', 'user-prev')
+      userElement.innerHTML = `
+         <img class="user-prev-photo" src="${user.avatar_url}" alt="${user.login}">
+         <span class="user-prev-name">${user.login}</span>
+      `
+
+      this.usersList.append(userElement)
+   }
 }
 
 
@@ -37,8 +48,21 @@ class Search{
    constructor(view){ // чтобы получить доступ к классу View
       this.view = view
 
-      this.view.searcInput
+      this.view.searcInput.addEventListener('keyup', this.searchUsers.bind(this))
    }
+
+   async searchUsers(){
+      return await fetch(`https://api.github.com/search/users?q=${this.view.searcInput.value}`)
+      .then(response => {
+         if(response.ok){
+            response.json()
+            .then(response => response.items.forEach(user =>  this.view.createUser(user)))
+         } else{
+
+         }
+      })
+   }
+
 
 
 }
