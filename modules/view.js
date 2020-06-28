@@ -1,5 +1,7 @@
 export class View {
-   constructor() {
+   constructor(api) {
+      this.api = api
+
       this.app = document.getElementById('app')
       this.title = this.createElement('h1', 'title')
       this.title.textContent = 'GitHub Search Users'
@@ -37,12 +39,19 @@ export class View {
 
    createUser(user) {
       const userElement = this.createElement('li', 'user-prev')
+      userElement.addEventListener('click', () => this.showUserData(user.login))
       userElement.innerHTML = `
          <img class="user-prev-photo" src="${user.avatar_url}" alt="${user.login}">
          <span class="user-prev-name">${user.login}</span>
       `
 
       this.usersList.append(userElement)
+   }
+
+   showUserData(login){
+      const data = this.api.loadUserData(login).then(r => {
+         console.log(r)
+      })
    }
 
    toggleLoadMoreBtn(bool){

@@ -4,4 +4,4 @@ import {API} from './modules/api.js'
 import {Log} from './modules/log.js'
 
 const api = new API()
-const app = new Search(new View(), api, new Log())
+const app = new Search(new View(api), api, new Log())
