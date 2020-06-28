@@ -16,7 +16,7 @@ export class View {
 
       this.loadMore = this.createElement('button', 'btn')
       this.loadMore.textContent = 'Загрузить еще'
-      this.loadMore.classList.add('hide')
+      this.loadMore.style.display = 'none'
       this.usersWrapper.append(this.loadMore)
 
       this.searchLine.append(this.searcInput)
@@ -36,7 +36,6 @@ export class View {
    }
 
    createUser(user) {
-      console.log(user)
       const userElement = this.createElement('li', 'user-prev')
       userElement.innerHTML = `
          <img class="user-prev-photo" src="${user.avatar_url}" alt="${user.login}">
@@ -44,6 +43,13 @@ export class View {
       `
 
       this.usersList.append(userElement)
-      this.loadMore.classList.remove('hide')
+   }
+
+   toggleLoadMoreBtn(bool){
+      this.loadMore.style.display = bool ? 'block' : 'none'
+   }
+
+   setCounterMessage(message){
+      this.searcCounter.innerHTML = message
    }
 }
