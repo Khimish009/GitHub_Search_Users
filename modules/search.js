@@ -13,14 +13,15 @@ export class Search {
    }
 
    loadUsers() {
+      this.setCurrentPage(1) // при первой загрузке
       if(this.view.searcInput.value === ''){
          this.clearUsers()
          this.view.toggleLoadMoreBtn(false)
          this.view.setCounterMessage('')
+      } else{
+         this.clearUsers()
+         this.usersRequest(this.view.searcInput.value)
       }
-      this.clearUsers()
-      this.setCurrentPage(1) // при первой загрузке
-      this.usersRequest(this.view.searcInput.value)
    }
 
    loadMoreUsers(){
