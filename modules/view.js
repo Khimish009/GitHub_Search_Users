@@ -10,6 +10,8 @@ export class View {
       this.searcInput = this.createElement('input', 'searc-input')
       this.searcCounter = this.createElement('span', 'searc-counter')
 
+      this.userEl = this.createElement('div', 'user')
+
       this.usersWrapper = this.createElement('div', 'users-wrapper')
       this.usersList = this.createElement('ul', 'users')
       this.main = this.createElement('div', 'main')
@@ -39,7 +41,7 @@ export class View {
 
    createUser(user) {
       const userElement = this.createElement('li', 'user-prev')
-      userElement.addEventListener('click', () => this.showUserData(user.login))
+      userElement.addEventListener('click', () => this.showUserData(user))
       userElement.innerHTML = `
          <img class="user-prev-photo" src="${user.avatar_url}" alt="${user.login}">
          <span class="user-prev-name">${user.login}</span>
@@ -48,10 +50,47 @@ export class View {
       this.usersList.append(userElement)
    }
 
-   showUserData(login){
-      const data = this.api.loadUserData(login).then(r => {
-         console.log(r)
+   showUserData(user){
+      this.api.loadUserData(user.login).then(response => {
+         const [following, followers, repos] = response
+         const followingList = this.createDataList(following, 'Following:')
+         const followersList = this.createDataList(followers, 'Followers:')
+         const reposList = this.createDataList(repos, 'Repos:')
+
+         if (this.userEl.innerHTML){
+            this.userEl.innerHTML = ''
+         }
+
+         this.userEl.innerHTML = `<img src="${user.avatar_url}" alt="${user.login}">
+                              <h2>${user.login}</h2>
+                              ${followingList}
+                              ${followersList}
+                              ${reposList}`   
       })
+
+      this.main.append(this.userEl)
+   }
+
+   createDataList(list, title){
+      console.log(list)
+      const block = this.createElement('div', 'user-block')
+      const titleTag = this.createElement('h3', 'user-block-title')
+      const listTag = this.createElement('ul', 'user-list')
+
+      list.forEach(item => {
+         const el = this.createElement('li', 'user-list-item')
+
+         el.innerHTML = `<a href="${item.html_url}">${item.login ? item.login : item.name}</a>`
+
+         listTag.append(el)
+      });
+
+
+      titleTag.textContent = title
+
+      block.append(titleTag)
+      block.append(listTag)
+      return block.innerHTML
    }
 
    toggleLoadMoreBtn(bool){

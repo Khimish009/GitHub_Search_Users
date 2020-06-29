@@ -55,6 +55,7 @@ export class Search {
 
    clearUsers(){
       this.view.usersList.innerHTML = ''
+      this.view.userEl.innerHTML = ''
    }
 
    debounce(func, wait, immediate) {
