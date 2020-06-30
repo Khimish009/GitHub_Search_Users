@@ -72,18 +72,24 @@ export class View {
    }
 
    createDataList(list, title){
-      console.log(list)
       const block = this.createElement('div', 'user-block')
       const titleTag = this.createElement('h3', 'user-block-title')
       const listTag = this.createElement('ul', 'user-list')
 
-      list.forEach(item => {
-         const el = this.createElement('li', 'user-list-item')
+      if(!list.length){
+            const el = this.createElement('li', 'user-list-item')
+            el.innerHTML = `отсутствиют`
+            listTag.append(el)
+      }
+      else{
+         list.forEach(item => {
+            const el = this.createElement('li', 'user-list-item')
 
-         el.innerHTML = `<a href="${item.html_url}">${item.login ? item.login : item.name}</a>`
+            el.innerHTML = `<a href="${item.html_url}">${item.login ? item.login : item.name}</a>`
 
-         listTag.append(el)
-      });
+            listTag.append(el)
+         });
+      }
 
 
       titleTag.textContent = title
